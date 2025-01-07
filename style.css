@@ -15,15 +15,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
 }
 
 .canvas-footer {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: 1100px;
+  width: 1360px;
   height: 30px;
   background-color: #14171a;
 }
@@ -33,8 +31,9 @@ body {
 }
 
 canvas {
-  background: url('images/11.png') no-repeat center center;
-  background-size: cover;
+  border: 10px solid #14171a;
+  /*background: url('images/1.png') no-repeat center center;*/
+  /*background-size: cover;*/
 }
 
 button {

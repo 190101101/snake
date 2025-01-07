@@ -6,26 +6,31 @@ const levelEl = document.querySelector('.level');
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
-canvas.width = 1100;
-canvas.height = 500;
+function resizeCanvas() {
+  let unitsize = 20; 
+  canvas.width = Math.floor(window.innerWidth / unitsize) * unitsize;
+  canvas.height = Math.floor((window.innerHeight * 0.90) / unitsize) * unitsize;
+}
+
+resizeCanvas();
+
 
 const gameWidth = canvas.width;
 const gameHeight = canvas.height;
 
-const bgImage = new Image();
-bgImage.src = 'images/11.png';
-
 let popSound = new Audio('audio/pop.mp3');
 let levelUpSound = new Audio('audio/level.mp3');
+// let snakeColor = 'indigo';
 let snakeColor = 'indigo';
-let snakeHeadColor = randomColor();
+// let snakeHeadColor = randomColor();
+let snakeHeadColor = 'orangered'
 let snakeBorder = 'violet';
 let foodColor = 'indigo';
 
 let foodX, foodY;
 let running = true;
 let canChangeDirection = true;
-let fps = 20;
+let fps = 30;
 let speed = fps;
 let unitsize = 20;
 let xVelocity = unitsize;
@@ -37,6 +42,23 @@ let lastScore = 0;
 let level = 1;
 
 window.addEventListener('keydown', changeDirection);
+window.addEventListener('resize', resizeCanvas);
+
+function drawGrid() {
+  ctx.strokeStyle = "#14171a";
+  for (let x = 0; x <= gameWidth; x += unitsize) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, gameHeight);
+    ctx.stroke();
+  }
+  for (let y = 0; y <= gameHeight; y += unitsize) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(gameWidth, y);
+    ctx.stroke();
+  }
+}
 
 init();
 
@@ -64,7 +86,8 @@ function nextTick() {
   }
 }
 function clearBoard() {
-  ctx.drawImage(bgImage, 0, 0, gameWidth, gameHeight);
+  ctx.clearRect(0, 0, gameWidth, gameHeight);
+  drawGrid();
 }
 
 function randomNum(num) {
@@ -261,7 +284,6 @@ function startTimer() {
       .toString()
       .padStart(2, '0');
     const remainingSeconds = (seconds % 60).toString().padStart(2, '0');
-    console.log(remainingSeconds);
     timerEl.innerHTML = `${minutes}:${remainingSeconds}`;
   }, 1000);
 }
