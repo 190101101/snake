@@ -20,7 +20,6 @@ const gameHeight = canvas.height;
 
 let popSound = new Audio('audio/pop.mp3');
 let levelUpSound = new Audio('audio/level.mp3');
-// let snakeColor = 'indigo';
 let snakeColor = 'indigo';
 // let snakeHeadColor = randomColor();
 let snakeHeadColor = 'orangered'
@@ -40,25 +39,13 @@ let score = 0;
 let life = 0;
 let lastScore = 0;
 let level = 1;
+// timer
+let status = true;
+let seconds = 0;
+
 
 window.addEventListener('keydown', changeDirection);
 window.addEventListener('resize', resizeCanvas);
-
-function drawGrid() {
-  ctx.strokeStyle = "#14171a";
-  for (let x = 0; x <= gameWidth; x += unitsize) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, gameHeight);
-    ctx.stroke();
-  }
-  for (let y = 0; y <= gameHeight; y += unitsize) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(gameWidth, y);
-    ctx.stroke();
-  }
-}
 
 init();
 
@@ -67,6 +54,7 @@ function init() {
   scoreEl.textContent = score;
   levelEl.textContent = level;
   speedEl.textContent = speed;
+  startTimer();
   createSnake();
   drawFood();
   createFood();
@@ -85,6 +73,24 @@ function nextTick() {
     }, 1000 / fps);
   }
 }
+
+
+function drawGrid() {
+  ctx.strokeStyle = "#14171a";
+  for (let x = 0; x <= gameWidth; x += unitsize) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, gameHeight);
+    ctx.stroke();
+  }
+  for (let y = 0; y <= gameHeight; y += unitsize) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(gameWidth, y);
+    ctx.stroke();
+  }
+}
+
 function clearBoard() {
   ctx.clearRect(0, 0, gameWidth, gameHeight);
   drawGrid();
@@ -269,9 +275,6 @@ function resetGame() {
   levelEl.textContent = level;
 }
 
-let status = true;
-let seconds = 0;
-
 function startTimer() {
   const interval = setInterval(() => {
     if (!status) {
@@ -288,8 +291,3 @@ function startTimer() {
   }, 1000);
 }
 
-startTimer();
-
-// setTimeout(() => {
-// status = false;
-// }, 5000);

@@ -18,10 +18,10 @@ body {
 }
 
 .canvas-footer {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: 1360px;
   height: 30px;
   background-color: #14171a;
 }
@@ -32,8 +32,6 @@ body {
 
 canvas {
   border: 10px solid #14171a;
-  /*background: url('images/1.png') no-repeat center center;*/
-  /*background-size: cover;*/
 }
 
 button {
