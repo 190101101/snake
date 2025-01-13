@@ -1,3 +1,5 @@
+const lastScoreEl = document.querySelector('.lastscore');
+const levelScoreEl = document.querySelector('.levelScore');
 const lifeEl = document.querySelector('.life');
 const timerEl = document.querySelector('.timer');
 const speedEl = document.querySelector('.speed');
@@ -7,13 +9,12 @@ const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
 function resizeCanvas() {
-  let unitsize = 20; 
-  canvas.width = Math.floor(window.innerWidth / unitsize) * unitsize;
-  canvas.height = Math.floor((window.innerHeight * 0.90) / unitsize) * unitsize;
+  let unitsize = 20;
+  canvas.width = Math.round(window.innerWidth / unitsize) * unitsize;
+  canvas.height = Math.round((window.innerHeight * 0.9) / unitsize) * unitsize;
 }
 
 resizeCanvas();
-
 
 const gameWidth = canvas.width;
 const gameHeight = canvas.height;
@@ -21,28 +22,26 @@ const gameHeight = canvas.height;
 let popSound = new Audio('audio/pop.mp3');
 let levelUpSound = new Audio('audio/level.mp3');
 let snakeColor = 'indigo';
-// let snakeHeadColor = randomColor();
-let snakeHeadColor = 'orangered'
+let snakeHeadColor = 'orangered';
 let snakeBorder = 'violet';
 let foodColor = 'indigo';
 
 let foodX, foodY;
 let running = true;
 let canChangeDirection = true;
-let fps = 30;
+let fps = 15;
 let speed = fps;
 let unitsize = 20;
 let xVelocity = unitsize;
 let yVelocity = 0;
 let snake = [];
 let score = 0;
-let life = 0;
+let life = 1;
 let lastScore = 0;
 let level = 1;
-// timer
 let status = true;
 let seconds = 0;
-
+let levelScore = 100;
 
 window.addEventListener('keydown', changeDirection);
 window.addEventListener('resize', resizeCanvas);
@@ -51,9 +50,12 @@ init();
 
 function init() {
   running = true;
+  lastScoreEl.textContent = lastScore;
   scoreEl.textContent = score;
   levelEl.textContent = level;
   speedEl.textContent = speed;
+  lifeEl.textContent = life;
+  levelScoreEl.textContent = levelScore;
   startTimer();
   createSnake();
   drawFood();
@@ -74,9 +76,8 @@ function nextTick() {
   }
 }
 
-
 function drawGrid() {
-  ctx.strokeStyle = "#14171a";
+  ctx.strokeStyle = '#14171a';
   for (let x = 0; x <= gameWidth; x += unitsize) {
     ctx.beginPath();
     ctx.moveTo(x, 0);
@@ -144,6 +145,13 @@ function createSnake() {
     { x: unitsize * 1, y: gameWidth / 2 },
     { x: unitsize * 0, y: gameWidth / 2 },
   ];
+
+  /*
+  for(let i = 98; i > 0; i--){
+    snake.push({x:unitsize*i, y:0})
+  }
+  */
+
   xVelocity = unitsize;
   yVelocity = 0;
 }
@@ -224,14 +232,16 @@ function changeDirection(e) {
       xVelocity = 0;
       yVelocity = -unitsize;
       break;
-    case keyPressed == SPACE:
-      running = !running;
-      nextTick();
-      console.log(running);
-      break;
-    case keyPressed == ESC:
-      createSnake();
-      break;
+    /*
+      case keyPressed == SPACE:
+        running = !running;
+        nextTick();
+        console.log(running);
+        break;
+        case keyPressed == ESC:
+          createSnake();
+          break;
+          */
     default:
       break;
   }
@@ -241,7 +251,6 @@ function changeDirection(e) {
 function checkGameOver() {
   for (let i = 1; i < snake.length; i++) {
     if (snake[i].x == snake[0].x && snake[i].y == snake[0].y) {
-      createSnake();
       resetGame();
       return;
     }
@@ -250,29 +259,50 @@ function checkGameOver() {
 
 function scoreUp() {
   score += 1;
-  lastScore++;
+  lastScore += 1;
   scoreEl.textContent = score;
-  if (lastScore >= 36) {
-    level += 1;
-    levelUpSound.play();
+  lastScoreEl.textContent = lastScore;
+  if (lastScore >= levelScore) {
     snakeHeadColor = randomColor();
     createSnake();
-    lastScore = 0;
-    // fps += 1;
-    speed = fps;
-    levelEl.textContent = level;
-    speedEl.textContent = speed;
+    levelUp();
   }
 }
 
-function levelUp() {}
+function levelUp() {
+  level += 1;
+  levelScore += 10;
+  life += 2;
+  levelUpSound.play();
+  lastScore = 0;
+  lastScoreEl.textContent = lastScore;
+
+  fps += 1;
+  speed = fps;
+  levelEl.textContent = level;
+  levelScoreEl.textContent = levelScore;
+  speedEl.textContent = speed;
+  lifeEl.textContent = life;
+}
 
 function resetGame() {
-  score = 0;
-  level = 1;
+  life -= 1;
+  lifeEl.textContent = life;
+
   lastScore = 0;
-  scoreEl.textContent = score;
-  levelEl.textContent = level;
+  lastScoreEl.textContent = lastScore;
+
+  if (life == 0) {
+    score = 0;
+    level = 1;
+    life = 3;
+    scoreEl.textContent = score;
+    levelEl.textContent = level;
+    lifeEl.textContent = life;
+    createSnake();
+  } else {
+    createSnake();
+  }
 }
 
 function startTimer() {
@@ -290,4 +320,3 @@ function startTimer() {
     timerEl.innerHTML = `${minutes}:${remainingSeconds}`;
   }, 1000);
 }
-
