@@ -29,7 +29,7 @@ let foodColor = 'indigo';
 let foodX, foodY;
 let running = true;
 let canChangeDirection = true;
-let fps = 15;
+let fps = 5;
 let speed = fps;
 let unitsize = 20;
 let xVelocity = unitsize;
