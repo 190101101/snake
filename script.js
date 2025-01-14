@@ -8,13 +8,19 @@ const levelEl = document.querySelector('.level');
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
+/*
 function resizeCanvas() {
   let unitsize = 20;
   canvas.width = Math.round(window.innerWidth / unitsize) * unitsize;
   canvas.height = Math.round((window.innerHeight * 0.9) / unitsize) * unitsize;
 }
+*/ 
 
-resizeCanvas();
+// resizeCanvas();
+
+canvas.width = 1000; // 50
+canvas.height = 560; //28
+
 
 const gameWidth = canvas.width;
 const gameHeight = canvas.height;
@@ -29,7 +35,7 @@ let foodColor = 'indigo';
 let foodX, foodY;
 let running = true;
 let canChangeDirection = true;
-let fps = 5;
+let fps = 15;
 let speed = fps;
 let unitsize = 20;
 let xVelocity = unitsize;
@@ -44,7 +50,7 @@ let seconds = 0;
 let levelScore = 100;
 
 window.addEventListener('keydown', changeDirection);
-window.addEventListener('resize', resizeCanvas);
+// window.addEventListener('resize', resizeCanvas);
 
 init();
 

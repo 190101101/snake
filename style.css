@@ -18,7 +18,7 @@ body {
 }
 
 .canvas-footer {
-  width: 100%;
+  width: 1020px;
   display: flex;
   align-items: center;
   justify-content: space-around;
