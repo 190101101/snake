@@ -8,22 +8,24 @@ const levelEl = document.querySelector('.level');
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
-/*
-function resizeCanvas() {
-  let unitsize = 20;
-  canvas.width = Math.round(window.innerWidth / unitsize) * unitsize;
-  canvas.height = Math.round((window.innerHeight * 0.9) / unitsize) * unitsize;
-}
-*/ 
+const margin = 10;
+const availableWidth = window.innerWidth - margin * 2;
+const availableHeight = window.innerHeight - margin * 6;
 
-// resizeCanvas();
+const maxCells = 40;
+const cellCountX = Math.floor(availableWidth / 20);
+const cellCountY = Math.floor(availableHeight / 20);
 
-canvas.width = 1000; // 50
-canvas.height = 560; //28
+const unitsize = Math.min(
+  Math.floor(availableWidth / cellCountX),
+  Math.floor(availableHeight / cellCountY)
+);
 
+const gameWidth = unitsize * cellCountX;
+const gameHeight = unitsize * cellCountY;
 
-const gameWidth = canvas.width;
-const gameHeight = canvas.height;
+canvas.width = gameWidth;
+canvas.height = gameHeight;
 
 let popSound = new Audio('audio/pop.mp3');
 let levelUpSound = new Audio('audio/level.mp3');
@@ -35,9 +37,9 @@ let foodColor = 'indigo';
 let foodX, foodY;
 let running = true;
 let canChangeDirection = true;
-let fps = 15;
+let fps = 5;
 let speed = fps;
-let unitsize = 20;
+// let unitsize = 20;
 let xVelocity = unitsize;
 let yVelocity = 0;
 let snake = [];
@@ -301,7 +303,7 @@ function resetGame() {
   if (life == 0) {
     score = 0;
     level = 1;
-    life = 3;
+    life = 1;
     scoreEl.textContent = score;
     levelEl.textContent = level;
     lifeEl.textContent = life;
